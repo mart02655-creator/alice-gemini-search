@@ -4,18 +4,18 @@
 
 ## Статус
 
-Локальные проверки используют имитацию API. Реальная скорость, доступность ключей и работа на колонке должны быть проверены после развёртывания. Проект ещё не опубликован и не запущен.
+На 10 октября 2026 года шаблон опубликован: https://github.com/mart02655-creator/alice-gemini-search. Сервер развёрнут на Vercel, проверены реальные ответы Gemini + Serper и тестер Яндекс Диалогов. Два контрольных вопроса заняли 1,7 и 2,7 секунды; это примеры, а не гарантия скорости. Проверка голосом на колонке остаётся отдельным шагом.
 
 ## Настройка
 
 1. Создайте Gemini API-ключ в https://aistudio.google.com/api-keys и Serper API-ключ в https://serper.dev. Проверьте доступность услуг для своего аккаунта и страны, квоты и оплату.
 2. Загрузите содержимое этой папки в репозиторий GitHub. Не загружайте `.env.local` и настоящие ключи. Импортируйте репозиторий в Vercel; Framework Preset — Other, без команды сборки.
 3. Создайте черновик навыка в https://dialogs.yandex.ru/developer и скопируйте его ID.
-4. Добавьте переменные Vercel для Production: `GEMINI_API_KEY`, `SERPER_API_KEY`, `ALICE_SKILL_ID`, `WEBHOOK_SECRET`. Для секрета используйте случайные 32 байта (64 hex-символа), например `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. `GEMINI_MODEL` по умолчанию — `gemini-3.8-flash`; доступность проверяется вашим аккаунтом.
+4. Добавьте переменные Vercel для Production: `GEMINI_API_KEY`, `SERPER_API_KEY`, `ALICE_SKILL_ID`, `WEBHOOK_SECRET`. Для секрета используйте случайные 32 байта (64 hex-символа), например `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`. `GEMINI_MODEL` по умолчанию — `gemini-3.5-flash-lite`; доступность проверяется вашим аккаунтом.
 5. Выполните новое production-развёртывание. В навыке установите webhook `https://ВАШ-ДОМЕН/api/alice?token=ВАШ-СЕКРЕТ`. Используйте постоянный production-домен. Внешние запросы Яндекс Диалогов должны иметь доступ к webhook без страницы входа Vercel; не отключайте защиту других проектов.
 6. Проверьте `/api/health`: `configured` подтверждает наличие настроек, но не работоспособность API.
 7. В тестере Диалогов проверьте приветствие, общий вопрос, вопрос о свежем событии, уточняющий вопрос и «выход». На колонке проверьте несколько вопросов подряд и первый запрос после простоя.
-8. Публикация для всех — отдельный этап с заполнением описания, иконки, необходимых сведений о данных и модерацией Яндекса.
+8. Для личного использования выберите «Приватный» и сохраните навык. При необходимости опубликуйте приватную версию в консоли; она доступна на устройствах вашего Яндекс-аккаунта. Публикация для всех — отдельный этап с заполнением описания, иконки, необходимых сведений о данных и модерацией Яндекса.
 
 ## Ограничение скорости
 
@@ -36,6 +36,12 @@ Node.js 24. Скопируйте `.env.example` в `.env.local`, заполни�
 ## Источники
 
 - Gemini REST: https://ai.google.dev/api/generate-content
-- Модель: https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash
+- Модель: https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite
 - Serper: https://serper.dev
 - Переменные Vercel: https://vercel.com/docs/environment-variables
+
+## Репозиторий и обновления
+
+[Развернуть свою копию в Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmart02655-creator%2Falice-gemini-search&env=GEMINI_API_KEY,SERPER_API_KEY,ALICE_SKILL_ID,WEBHOOK_SECRET&envDescription=API%20keys%20and%20Alice%20skill%20settings). Выберите Framework Preset Other. Добавляйте собственные ключи; в репозитории нет секретов.
+
+Текущая личная установка была развёрнута через загрузку архива Vercel Drop. Автоматическая синхронизация с GitHub ещё не подключена: для обновления этой установки нужен новый архив или подключение Vercel GitHub App к репозиторию.
